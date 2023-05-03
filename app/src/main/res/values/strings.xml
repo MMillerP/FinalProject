@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Age of Economics</string>
+    <string-array name="buildableFactories">
+        <item>No Factory</item>
+        <item>Lumberyard</item>
+        <item>Iron Mine</item>
+        <item>Coal Mine</item>
+        <item>String Maker</item>
+        <item>Steel Plant</item>
+        <item>Wood Plant</item>
+        <item>Cement Plant</item>
+        <item>Cloth Plant</item>
+        <item>Clothes</item>
+        <item>Carpenter</item>
+        <item>Food Plant</item>
+        <item>Paper Mill</item>
+    </string-array>
+    <string name="action_factory">Factory Manager</string>
+    <string name="action_resources">Resource View</string>
+    <string name="action_statistics">National Statistics</string>
+    <string name="action_settings">Settings</string>
+</resources>
