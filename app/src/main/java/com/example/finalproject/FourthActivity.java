@@ -51,6 +51,23 @@ public class FourthActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt("money",currentMoney);
+        outState.putInt("turn",currentTurn);
+        outState.putInt("pop",currentPop);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        currentMoney = savedInstanceState.getInt("money");
+        currentTurn = savedInstanceState.getInt("turn");
+        currentPop = savedInstanceState.getInt("pop");
+
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

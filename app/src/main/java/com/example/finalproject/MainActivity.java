@@ -207,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // functionality for bulid/expand button
+        // functionality for build/expand button
         BEButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -351,6 +351,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putInt("money",currentMoney);
+        outState.putInt("turn",currentTurn);
+        outState.putInt("pop",currentPop);
+    }
+
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+        currentMoney = savedInstanceState.getInt("money");
+        currentTurn = savedInstanceState.getInt("turn");
+        currentPop = savedInstanceState.getInt("pop");
+
+    }
+
     public void updateResourceValues(){
 
     }
@@ -400,11 +417,6 @@ public class MainActivity extends AppCompatActivity {
             default:
                 return true;
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
     }
 
     // updates all ui elements for factory management page
