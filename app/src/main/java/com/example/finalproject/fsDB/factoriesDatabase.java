@@ -28,7 +28,6 @@ public abstract class factoriesDatabase extends RoomDatabase{
                 if(INSTANCE==null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             factoriesDatabase.class,"factories_database")
-                            .addCallback(createFactoriesDatabaseCallback)
                             .fallbackToDestructiveMigration()
                             .build();
                     create();
@@ -37,16 +36,6 @@ public abstract class factoriesDatabase extends RoomDatabase{
         }
         return INSTANCE;
     }
-
-    private static RoomDatabase.Callback createFactoriesDatabaseCallback = new RoomDatabase.Callback(){
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase fsDB){
-            super.onCreate(fsDB);
-            createFactorySlotTable();
-        }
-    };
-
-
 
     private static void createFactorySlotTable(){
         for(int i = 0; i < 12; i++){

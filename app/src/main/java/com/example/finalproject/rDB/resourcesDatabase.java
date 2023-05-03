@@ -30,7 +30,6 @@ public abstract class resourcesDatabase extends RoomDatabase {
                 if(INSTANCE==null){
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                     resourcesDatabase.class,"resources_database")
-                    //.addCallback(createResourcesDatabaseCallback)
                     .fallbackToDestructiveMigration()
                     .build();
                     create();
@@ -40,15 +39,6 @@ public abstract class resourcesDatabase extends RoomDatabase {
         return INSTANCE;
     }
 
-    /*
-    private static RoomDatabase.Callback createResourcesDatabaseCallback = new RoomDatabase.Callback(){
-        @Override
-        public void onCreate(@NonNull SupportSQLiteDatabase rDB) {
-            super.onCreate(rDB);
-            createResourceTable();
-        }
-    };
-*/
     private static void createResourceTable(){
         for(int i = 0; i < 12; i++){
             insert(new resource
