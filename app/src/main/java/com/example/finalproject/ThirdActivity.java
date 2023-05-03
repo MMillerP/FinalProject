@@ -26,6 +26,8 @@ import com.example.finalproject.rDB.resourcesDatabase;
 import com.example.finalproject.rDB.resource;
 import com.example.finalproject.rDB.resourcesViewModel;
 
+import java.util.Random;
+
 
 public class ThirdActivity extends AppCompatActivity {
 
@@ -83,7 +85,7 @@ public class ThirdActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentPop = currentPop + 10000;
-                String popString = "Turn " + Integer.toString(currentTurn);
+                String popString = Integer.toString(currentPop) + " people";
                 popTV.setText(popString);
                 for (int i = 0; i < 12; i++){
                     resourcesDatabase.getResource(i,resource-> { // updates pop consumptions
@@ -111,6 +113,9 @@ public class ThirdActivity extends AppCompatActivity {
                     endGameConfirmationDialog popup = new endGameConfirmationDialog();
                     popup.show(getSupportFragmentManager(),"end Game notification");
                 }
+                randomEventConfirmationDialog popup = new randomEventConfirmationDialog();
+                popup.show(getSupportFragmentManager(),"random event popup");
+
             }
         });
 
@@ -223,6 +228,205 @@ public class ThirdActivity extends AppCompatActivity {
         }
 
     }
+
+    public void doRandomEventLoad(final int player, final int type, final int pc, final int amt){
+        // player two
+        if(player == 0){// pc == 0 is produce,
+            if(pc==0){
+                resourcesDatabase.getResource(type,resource -> {
+                    resourcesDatabase.update(new resource(
+                            type,
+                            resource.tag,
+                            resource.produceOne,
+                            resource.consumeOne,
+                            resource.produceTwo+amt,
+                            resource.consumeTwo,
+                            resource.produceThree,
+                            resource.consumeThree,
+                            resource.produceFour,
+                            resource.consumeFour
+                    ));
+                });
+            }else{
+                resourcesDatabase.getResource(type,resource -> {
+                    resourcesDatabase.update(new resource(
+                            type,
+                            resource.tag,
+                            resource.produceOne,
+                            resource.consumeOne,
+                            resource.produceTwo,
+                            resource.consumeTwo+amt,
+                            resource.produceThree,
+                            resource.consumeThree,
+                            resource.produceFour,
+                            resource.consumeFour
+                    ));
+                });
+            }
+        }
+        // player three
+        else if(player ==1){
+            if(pc == 0){
+                resourcesDatabase.getResource(type,resource -> {
+                    resourcesDatabase.update(new resource(
+                            type,
+                            resource.tag,
+                            resource.produceOne,
+                            resource.consumeOne,
+                            resource.produceTwo,
+                            resource.consumeTwo,
+                            resource.produceThree+amt,
+                            resource.consumeThree,
+                            resource.produceFour,
+                            resource.consumeFour
+                    ));
+                });
+            }else{
+                resourcesDatabase.getResource(type,resource -> {
+                    resourcesDatabase.update(new resource(
+                            type,
+                            resource.tag,
+                            resource.produceOne,
+                            resource.consumeOne,
+                            resource.produceTwo,
+                            resource.consumeTwo,
+                            resource.produceThree,
+                            resource.consumeThree+amt,
+                            resource.produceFour,
+                            resource.consumeFour
+                    ));
+                });
+            }
+        }
+        // player four
+        else{
+            if(pc == 0){
+                resourcesDatabase.getResource(type,resource -> {
+                    resourcesDatabase.update(new resource(
+                            type,
+                            resource.tag,
+                            resource.produceOne,
+                            resource.consumeOne,
+                            resource.produceTwo,
+                            resource.consumeTwo,
+                            resource.produceThree,
+                            resource.consumeThree,
+                            resource.produceFour+amt,
+                            resource.consumeFour
+                    ));
+                });
+            }else{
+                resourcesDatabase.getResource(type,resource -> {
+                    resourcesDatabase.update(new resource(
+                            type,
+                            resource.tag,
+                            resource.produceOne,
+                            resource.consumeOne,
+                            resource.produceTwo,
+                            resource.consumeTwo,
+                            resource.produceThree,
+                            resource.consumeThree,
+                            resource.produceFour,
+                            resource.consumeFour+amt
+                    ));
+                });
+            }
+        }
+        getIncome();
+        getExpenses();
+        getProfit();
+    }
+
+    public String getFactoryTag(int factoryID) {
+        //convert ID to tag
+        switch (factoryID) {
+            case 1: //Lumber Yard
+                return "LMB";
+            case 2: // Iron Mine
+                return "IRN";
+            case 3: // Coal Mine
+                return "COA";
+            case 4: // String Maker
+                return "STR";
+            case 5: // Steel Plant
+                return "STE";
+            case 6: // Wood Mill
+                return "WOO";
+            case 7: // Cement Mix
+                return "CEM";
+            case 8: // Cloth Mill
+                return "CLO";
+            case 9: // Clothes
+                return "CLT";
+            case 10: // Carpenter
+                return "CAR";
+            case 11: // Food Plant
+                return "FOO";
+            case 12: // Paper Mill
+                return "PAP";
+        }
+        return "";
+    }
+
+    public static class randomEventConfirmationDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState){
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            Random rand = new Random();
+            final int player = rand.nextInt(3); // 0 -> 2 ai player
+            final int type = rand.nextInt(12); // 0 -> 11 resource type
+            final int pc = rand.nextInt(2); // 0 -> 1 produce or consume
+            final int amt = rand.nextInt(50) + 1; // 1 -> 50 amount
+
+            String message = "";
+            if(player == 0){
+                message = message + "Rivertown ";
+            }
+            else if (player == 1){
+                message = message + "New Carlisle ";
+            }
+            else{
+                message = message + "Cliffton ";
+            }
+            if(pc == 0){
+                message = message + "has started to produce ";
+            }
+            else{
+                message = message + "has started to consume ";
+            }
+            message = message + Integer.toString(amt) + " more ";
+            if(type == 0){
+                    message = message + "units of lumber.";}
+            else if (type == 1){
+                    message = message + "units of iron.";}
+            else if(type == 2){
+                    message = message + "units of coal.";}
+            else if(type == 3){
+                    message = message + "units of string.";}
+            else if(type == 4){
+                    message = message + "units of steel.";}
+            else if(type == 5){
+                    message = message + "units of wood.";}
+            else if(type == 6){
+                    message = message + "units of cement.";}
+            else if(type == 7){
+                    message = message + "units of cloth.";}
+            else if(type == 8){
+                    message = message + "units of clothes.";}
+            else if(type == 9){
+                    message = message + "units of furniture.";}
+            else if(type == 10){
+                    message = message + "units of food.";}
+            else if(type == 11){
+                    message = message + "units of paper.";
+            }
+
+            builder.setMessage(message).setPositiveButton("Interesting", (dialog,id)-> ((ThirdActivity) getActivity()).doRandomEventLoad(player,type,pc,amt));
+            return builder.create();
+        }
+    }
+
+
 
     public static class endGameConfirmationDialog extends DialogFragment {
         @Override
